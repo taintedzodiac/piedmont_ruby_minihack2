@@ -1,23 +1,19 @@
 class TweetsController < ApplicationController
-  def show_for_user
-    @user = User.find(params[:id])
+  def index
+    @user = User.find(params[:user_id])
     @tweets = @user.tweets
-
-    respond_to do |format|
-      format.html
-      format.json { render :json => @tweets.to_json }
-    end
   end
 
   def create
-    @user = User.find(params[:id])
-    @tweet = Tweet.new(params[:tweet])
+    @user = User.find(params[:user_id])
+    @tweet = Tweet.new(tweet_params)
     @tweet.user = @user
-    @tweet.save
+    @tweet.save!
+  end
 
-    respond_to do |format|
-      format.html
-      format.json { render :json => @tweet.to_json }
-    end
+  private
+
+  def tweet_params
+    params.require(:tweet).permit(:text)
   end
 end
