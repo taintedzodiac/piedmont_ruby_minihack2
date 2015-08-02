@@ -3,11 +3,9 @@ Rails.application.routes.draw do
   root 'users#index'
 
   resources :users do
-    member do
-      get 'tweets' => 'tweets#show_for_user'
-      post 'tweets' => 'tweets#create'
-    end
+    resources :tweets, only: [:index, :create]
   end
+  get '/tweets', to: 'streams#index', as: :tweets_index
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
